@@ -15,9 +15,13 @@ export default function ProductCard({
   showRemove = false,
   onRemove,
 }: ProductCardProps) {
+  const isStorewide = product.saleType === "storewide";
+  const isCoupon = product.saleType === "coupon";
+  const isOnSale = product.onSale;
+
   return (
-    <div className="group relative">
-      {/* Image container */}
+    <div className="group relative flex flex-col h-full">
+      {/* Image container - fixed aspect ratio */}
       <Link href={`/product/${product.id}`} className="block">
         <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 mb-3">
           <Image
@@ -35,67 +39,115 @@ export default function ProductCard({
             </span>
           </div>
 
-          {/* Sale badge - top right */}
-          {product.onSale && (
-            <div className="absolute top-3 right-3 bg-gradient-to-r from-purple-500 via-orange-400 to-pink-500 px-3 py-1 rounded-sm">
-              <span className="text-[10px] font-bold tracking-widest uppercase text-white">
-                Sale
+          {/* Sale badge - top right: distinct styles for storewide vs coupon */}
+          {isStorewide && (
+            <div className="absolute top-3 right-3 bg-[#1A1A1A] px-3 py-1.5 rounded-lg shadow-md">
+              <span className="text-[9px] font-bold tracking-widest uppercase text-white">
+                Storewide Sale
+              </span>
+            </div>
+          )}
+          {isCoupon && (
+            <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1.5 rounded-lg shadow-md">
+              <span className="text-[9px] font-bold tracking-widest uppercase text-white">
+                Coupon Available
+              </span>
+            </div>
+          )}
+
+          {/* Discount percentage tile - bottom right corner */}
+          {isOnSale && product.discountPercent && (
+            <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm w-14 h-14 rounded-xl shadow-lg flex flex-col items-center justify-center">
+              <span className="text-base font-black text-[#1A1A1A] leading-none">
+                {product.discountPercent}%
+              </span>
+              <span className="text-[8px] font-bold text-gray-500 uppercase tracking-wide">
+                Off
               </span>
             </div>
           )}
         </div>
       </Link>
 
-      {/* Product info */}
-      <div className="space-y-1.5">
+      {/* Product info - flex-grow to push button to bottom */}
+      <div className="flex flex-col flex-grow">
+        {/* Brand */}
         <p className="text-[11px] text-gray-400 font-medium tracking-wider uppercase">
           {product.brand}
         </p>
+
+        {/* Title - fixed height for alignment */}
         <Link href={`/product/${product.id}`}>
-          <h3 className="text-xs font-semibold tracking-wider uppercase leading-tight hover:text-gray-600 transition-colors">
+          <h3 className="text-xs font-semibold tracking-wider uppercase leading-tight hover:text-gray-600 transition-colors mt-1 min-h-[32px] line-clamp-2">
             {product.title}
           </h3>
         </Link>
 
-        {/* Pricing */}
-        <div className="flex items-center gap-2">
-          {product.onSale ? (
-            <>
-              <span className="text-sm font-bold">
-                ${product.currentPrice.toFixed(2)}
-              </span>
-              <span className="text-sm text-gray-400 line-through">
-                ${product.originalPrice.toFixed(2)}
-              </span>
-              <span className="text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-sm">
-                -{product.discountPercent}%
-              </span>
-            </>
-          ) : (
-            <span className="text-sm font-medium">
-              ${product.originalPrice.toFixed(2)}
-            </span>
-          )}
-        </div>
-
-        {/* Saving */}
-        {product.onSale && product.saving && (
-          <p className="text-[11px] text-green-600 font-medium">
-            You save ${product.saving.toFixed(2)}
+        {/* Sale name label */}
+        {isOnSale && product.saleName && (
+          <p className="text-[10px] font-medium text-gray-400 mt-1.5 tracking-wide">
+            {product.saleName}
           </p>
         )}
 
-        {/* Discount code */}
-        {product.discountCode && (
-          <div className="inline-block bg-gray-100 px-2 py-1 rounded-sm">
-            <span className="text-[10px] font-bold tracking-wider text-gray-600">
-              CODE: {product.discountCode}
+        {/* Pricing block - fixed position */}
+        <div className="mt-2">
+          {isOnSale ? (
+            <div className="flex items-baseline gap-2">
+              <span className="text-sm font-bold text-[#1A1A1A]">
+                ${product.currentPrice.toFixed(2)}
+              </span>
+              <span className="text-sm text-gray-300 line-through">
+                ${product.originalPrice.toFixed(2)}
+              </span>
+            </div>
+          ) : (
+            <span className="text-sm font-medium text-[#1A1A1A]">
+              ${product.originalPrice.toFixed(2)}
             </span>
-          </div>
-        )}
+          )}
 
-        {/* Actions */}
-        <div className="flex items-center gap-2 pt-1">
+          {/* Saving amount */}
+          {isOnSale && product.saving && (
+            <p className="text-[11px] text-emerald-600 font-semibold mt-1">
+              You save ${product.saving.toFixed(2)}
+            </p>
+          )}
+        </div>
+
+        {/* Coupon code or storewide indicator */}
+        <div className="mt-2 min-h-[28px]">
+          {isCoupon && product.discountCode && (
+            <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3 text-amber-600">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
+              </svg>
+              <span className="text-[10px] font-bold tracking-wider text-amber-700">
+                {product.discountCode}
+              </span>
+              <span className="text-[9px] text-amber-500 font-medium">
+                Apply at checkout
+              </span>
+            </div>
+          )}
+          {isStorewide && (
+            <div className="inline-flex items-center gap-1.5 bg-gray-100 px-2.5 py-1 rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3 text-gray-600">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+              </svg>
+              <span className="text-[10px] font-bold tracking-wider text-gray-600">
+                No code needed
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Spacer to push button to bottom */}
+        <div className="flex-grow" />
+
+        {/* Actions - always at bottom */}
+        <div className="flex items-center gap-2 mt-3">
           <a
             href={product.url}
             target="_blank"

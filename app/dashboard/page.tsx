@@ -53,17 +53,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      {/* Sale announcement bar */}
-      {onSaleCount > 0 && (
-        <div className="bg-gradient-to-r from-purple-500 via-orange-400 to-pink-500">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-center">
-            <p className="text-white text-sm font-semibold tracking-wider">
-              🔥 {onSaleCount} of your items {onSaleCount === 1 ? "is" : "are"}{" "}
-              on sale right now!
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Sale announcement bar removed - replaced with in-grid sale tile */}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Header */}
@@ -152,6 +142,27 @@ export default function DashboardPage() {
         {/* Product Grid or Empty State */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {/* Sale count tile - first position */}
+            {onSaleCount > 0 && filter !== "on-sale" && (
+              <button
+                onClick={() => setFilter("on-sale")}
+                className="relative aspect-[3/4] bg-[#1A1A1A] rounded-2xl flex flex-col items-center justify-center p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer group"
+              >
+                <div className="text-6xl font-black text-white mb-2 group-hover:scale-110 transition-transform">
+                  {onSaleCount}
+                </div>
+                <div className="text-xs font-bold tracking-widest uppercase text-white/70">
+                  {onSaleCount === 1 ? "Item" : "Items"} on Sale
+                </div>
+                <div className="mt-4 bg-white/10 rounded-full px-4 py-1.5">
+                  <span className="text-[10px] font-semibold tracking-wider uppercase text-white/80">
+                    View All →
+                  </span>
+                </div>
+                <div className="absolute top-4 right-4 w-3 h-3 bg-emerald-400 rounded-full animate-pulse" />
+              </button>
+            )}
+
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}

@@ -1,3 +1,5 @@
+export type SaleType = "storewide" | "coupon" | "none";
+
 export interface Product {
   id: string;
   title: string;
@@ -9,6 +11,8 @@ export interface Product {
   originalPrice: number;
   currentPrice: number;
   onSale: boolean;
+  saleType: SaleType;
+  saleName?: string;
   discountCode?: string;
   discountPercent?: number;
   saving?: number;
@@ -28,6 +32,8 @@ export const products: Product[] = [
     originalPrice: 139.00,
     currentPrice: 89.00,
     onSale: true,
+    saleType: "storewide" as SaleType,
+    saleName: "Easter Weekend Sale",
     discountPercent: 36,
     saving: 50.00,
     category: "Tops",
@@ -48,6 +54,7 @@ export const products: Product[] = [
     originalPrice: 89.95,
     currentPrice: 89.95,
     onSale: false,
+    saleType: "none" as SaleType,
     category: "Bottoms",
     dateAdded: "2026-03-18",
     priceHistory: [
@@ -65,6 +72,8 @@ export const products: Product[] = [
     originalPrice: 45.00,
     currentPrice: 27.00,
     onSale: true,
+    saleType: "coupon" as SaleType,
+    saleName: "Easter Promo Code",
     discountCode: "EASTER30",
     discountPercent: 40,
     saving: 18.00,
@@ -86,6 +95,7 @@ export const products: Product[] = [
     originalPrice: 299.00,
     currentPrice: 299.00,
     onSale: false,
+    saleType: "none" as SaleType,
     category: "Outerwear",
     dateAdded: "2026-03-20",
     priceHistory: [
@@ -103,6 +113,8 @@ export const products: Product[] = [
     originalPrice: 595.00,
     currentPrice: 416.50,
     onSale: true,
+    saleType: "storewide" as SaleType,
+    saleName: "Autumn Clearance",
     discountPercent: 30,
     saving: 178.50,
     category: "Shoes",
@@ -124,6 +136,8 @@ export const products: Product[] = [
     originalPrice: 49.99,
     currentPrice: 29.99,
     onSale: true,
+    saleType: "coupon" as SaleType,
+    saleName: "Autumn Promo",
     discountCode: "AUTUMN40",
     discountPercent: 40,
     saving: 20.00,
@@ -145,6 +159,7 @@ export const products: Product[] = [
     originalPrice: 149.90,
     currentPrice: 149.90,
     onSale: false,
+    saleType: "none" as SaleType,
     category: "Knitwear",
     dateAdded: "2026-03-22",
     priceHistory: [
@@ -162,6 +177,8 @@ export const products: Product[] = [
     originalPrice: 249.95,
     currentPrice: 174.97,
     onSale: true,
+    saleType: "storewide" as SaleType,
+    saleName: "Mid-Season Sale",
     discountPercent: 30,
     saving: 74.98,
     category: "Outerwear",
@@ -183,6 +200,7 @@ export const products: Product[] = [
     originalPrice: 129.95,
     currentPrice: 129.95,
     onSale: false,
+    saleType: "none" as SaleType,
     category: "Bottoms",
     dateAdded: "2026-03-25",
     priceHistory: [
@@ -200,6 +218,7 @@ export const products: Product[] = [
     originalPrice: 649.00,
     currentPrice: 649.00,
     onSale: false,
+    saleType: "none" as SaleType,
     category: "Shoes",
     dateAdded: "2026-03-28",
     priceHistory: [

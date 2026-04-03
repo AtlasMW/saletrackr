@@ -20,10 +20,10 @@ export default function ProductCard({
   const isOnSale = product.onSale;
 
   return (
-    <div className={`group relative flex flex-col h-full ${isOnSale ? "ring-2 ring-amber-400/60 rounded-lg" : ""}`}>
+    <div className="group relative flex flex-col h-full p-1">
       {/* Image container - fixed aspect ratio */}
       <Link href={`/product/${product.id}`} className="block">
-        <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 mb-3 rounded-t-lg">
+        <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 mb-4 rounded-lg">
           <Image
             src={product.image}
             alt={product.title}
@@ -70,7 +70,7 @@ export default function ProductCard({
       </Link>
 
       {/* Product info - flex-grow to push button to bottom */}
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col flex-grow px-1">
         {/* Brand */}
         <p className="text-[11px] text-gray-400 font-medium tracking-wider uppercase">
           {product.brand}
@@ -78,23 +78,23 @@ export default function ProductCard({
 
         {/* Title - fixed height for alignment */}
         <Link href={`/product/${product.id}`}>
-          <h3 className="text-xs font-semibold tracking-wider uppercase leading-tight hover:text-gray-600 transition-colors mt-1 min-h-[32px] line-clamp-2">
+          <h3 className="text-[13px] font-semibold tracking-wide uppercase leading-snug hover:text-gray-600 transition-colors mt-1.5 min-h-[36px] line-clamp-2">
             {product.title}
           </h3>
         </Link>
 
         {/* Sale name label */}
         {isOnSale && product.saleName && (
-          <p className="text-[10px] font-medium text-gray-400 mt-1.5 tracking-wide">
+          <p className="text-[10px] font-medium text-gray-400 mt-1 tracking-wide">
             {product.saleName}
           </p>
         )}
 
-        {/* Pricing block - fixed position */}
-        <div className="mt-2">
+        {/* Pricing block */}
+        <div className="mt-3">
           {isOnSale ? (
-            <div className="flex items-baseline gap-2">
-              <span className="text-sm font-bold text-[#1A1A1A]">
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-base font-bold text-[#1A1A1A]">
                 ${product.currentPrice.toFixed(2)}
               </span>
               <span className="text-sm text-gray-300 line-through">
@@ -102,24 +102,24 @@ export default function ProductCard({
               </span>
             </div>
           ) : (
-            <span className="text-sm font-medium text-[#1A1A1A]">
+            <span className="text-base font-medium text-[#1A1A1A]">
               ${product.originalPrice.toFixed(2)}
             </span>
           )}
 
           {/* Saving amount */}
           {isOnSale && product.saving && (
-            <p className="text-[11px] text-emerald-600 font-semibold mt-1">
+            <p className="text-[11px] text-emerald-600 font-semibold mt-1.5">
               You save ${product.saving.toFixed(2)}
             </p>
           )}
         </div>
 
         {/* Coupon code or storewide indicator */}
-        <div className="mt-2 min-h-[28px]">
+        <div className="mt-3 min-h-[32px]">
           {isCoupon && product.discountCode && (
-            <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-md">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3 text-amber-600">
+            <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-2.5 py-1.5 rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 text-amber-600 flex-shrink-0">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
               </svg>
@@ -127,16 +127,16 @@ export default function ProductCard({
                 {product.discountCode}
               </span>
               <span className="text-[9px] text-amber-500 font-medium">
-                Apply at checkout
+                at checkout
               </span>
             </div>
           )}
           {isStorewide && (
-            <div className="inline-flex items-center gap-1.5 bg-gray-100 px-2.5 py-1 rounded-md">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3 text-gray-600">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+            <div className="inline-flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1.5 rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="text-[10px] font-bold tracking-wider text-gray-600">
+              <span className="text-[10px] font-bold tracking-wider text-emerald-700">
                 No code needed
               </span>
             </div>
@@ -144,16 +144,16 @@ export default function ProductCard({
         </div>
 
         {/* Spacer to push button to bottom */}
-        <div className="flex-grow" />
+        <div className="flex-grow min-h-[12px]" />
 
         {/* Actions - always at bottom */}
-        <div className="flex items-center gap-2 mt-3">
+        <div className="flex items-center gap-2 mt-4 pb-1">
           {isOnSale ? (
             <a
               href={product.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-emerald-600 text-white text-[11px] font-bold tracking-wider uppercase text-center py-2.5 rounded-md hover:bg-emerald-700 transition-colors"
+              className="flex-1 bg-emerald-600 text-white text-[11px] font-bold tracking-wider uppercase text-center py-3 rounded-lg hover:bg-emerald-700 transition-colors"
             >
               Buy Now
             </a>
@@ -162,7 +162,7 @@ export default function ProductCard({
               href={product.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-transparent border-2 border-[#1A1A1A] text-[#1A1A1A] text-[11px] font-bold tracking-wider uppercase text-center py-2 rounded-md hover:bg-[#1A1A1A] hover:text-white transition-colors"
+              className="flex-1 bg-transparent border-2 border-[#1A1A1A] text-[#1A1A1A] text-[11px] font-bold tracking-wider uppercase text-center py-2.5 rounded-lg hover:bg-[#1A1A1A] hover:text-white transition-colors"
             >
               Buy Anyway
             </a>

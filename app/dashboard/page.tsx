@@ -68,7 +68,7 @@ export default function DashboardPage() {
         {onSaleCount > 0 && filter !== "on-sale" && (
           <button
             onClick={() => setFilter("on-sale")}
-            className="w-full bg-white rounded-2xl shadow-sm hover:shadow-md transition-all mb-8 p-6 flex items-center justify-between group border border-gray-100"
+            className="w-full bg-white rounded-2xl shadow-sm hover:shadow-md transition-all mb-4 p-6 flex items-center justify-between group border border-gray-100"
           >
             <div className="flex items-center gap-5">
               <div className="relative">
@@ -93,6 +93,30 @@ export default function DashboardPage() {
             </div>
           </button>
         )}
+
+        {/* Add New Product bar - blue, below sale banner */}
+        <Link
+          href="/add"
+          className="block w-full bg-blue-600 text-white text-center py-4 rounded-xl text-sm font-bold tracking-widest uppercase hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md mb-8"
+        >
+          <span className="flex items-center justify-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+              stroke="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+            Add New Product
+          </span>
+        </Link>
 
         {/* Search + Filters */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
@@ -189,31 +213,8 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Big Add New Product button at bottom */}
-        <div className="mt-12">
-          <Link
-            href="/add"
-            className="block w-full bg-[#1A1A1A] text-white text-center py-5 rounded-xl text-sm font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors shadow-sm hover:shadow-md"
-          >
-            <span className="flex items-center justify-center gap-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-              Add New Product
-            </span>
-          </Link>
-        </div>
+        {/* Bottom spacer */}
+        <div className="mt-8" />
       </main>
 
       <Footer />

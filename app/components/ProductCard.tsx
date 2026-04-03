@@ -20,10 +20,10 @@ export default function ProductCard({
   const isOnSale = product.onSale;
 
   return (
-    <div className="group relative flex flex-col h-full">
+    <div className={`group relative flex flex-col h-full ${isOnSale ? "ring-2 ring-amber-400/60 rounded-lg" : ""}`}>
       {/* Image container - fixed aspect ratio */}
       <Link href={`/product/${product.id}`} className="block">
-        <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 mb-3">
+        <div className="relative aspect-[3/4] overflow-hidden bg-gray-50 mb-3 rounded-t-lg">
           <Image
             src={product.image}
             alt={product.title}
@@ -32,30 +32,30 @@ export default function ProductCard({
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
 
-          {/* Retailer badge - top left */}
-          <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-sm">
-            <span className="text-[10px] font-semibold tracking-wider uppercase text-gray-600">
-              {product.retailer}
-            </span>
-          </div>
-
-          {/* Sale badge - top right: distinct styles for storewide vs coupon */}
-          {isStorewide && (
-            <div className="absolute top-3 right-3 bg-[#1A1A1A] px-3 py-1.5 rounded-lg shadow-md">
-              <span className="text-[9px] font-bold tracking-widest uppercase text-white">
-                Storewide Sale
-              </span>
-            </div>
-          )}
-          {isCoupon && (
-            <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1.5 rounded-lg shadow-md">
-              <span className="text-[9px] font-bold tracking-widest uppercase text-white">
-                Coupon Available
+          {/* Retailer badge - top left, only on non-sale items */}
+          {!isOnSale && (
+            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-sm">
+              <span className="text-[10px] font-semibold tracking-wider uppercase text-gray-600">
+                {product.retailer}
               </span>
             </div>
           )}
 
-          {/* Discount percentage tile - bottom right corner */}
+          {/* Sale banner across top of image */}
+          {isOnSale && (
+            <div className="absolute top-0 left-0 right-0 bg-emerald-600 py-2 px-3 flex items-center justify-between">
+              <span className="text-[10px] font-bold tracking-widest uppercase text-white">
+                {isStorewide ? "Storewide Sale" : "Coupon Available"}
+              </span>
+              {product.discountPercent && (
+                <span className="text-[10px] font-black text-white">
+                  {product.discountPercent}% OFF
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Discount percentage tile - bottom right corner (only on sale) */}
           {isOnSale && product.discountPercent && (
             <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm w-14 h-14 rounded-xl shadow-lg flex flex-col items-center justify-center">
               <span className="text-base font-black text-[#1A1A1A] leading-none">
@@ -148,14 +148,25 @@ export default function ProductCard({
 
         {/* Actions - always at bottom */}
         <div className="flex items-center gap-2 mt-3">
-          <a
-            href={product.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 bg-[#1A1A1A] text-white text-[11px] font-semibold tracking-wider uppercase text-center py-2.5 hover:bg-gray-800 transition-colors"
-          >
-            Buy Now
-          </a>
+          {isOnSale ? (
+            <a
+              href={product.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-emerald-600 text-white text-[11px] font-bold tracking-wider uppercase text-center py-2.5 rounded-md hover:bg-emerald-700 transition-colors"
+            >
+              Buy Now
+            </a>
+          ) : (
+            <a
+              href={product.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-transparent border-2 border-[#1A1A1A] text-[#1A1A1A] text-[11px] font-bold tracking-wider uppercase text-center py-2 rounded-md hover:bg-[#1A1A1A] hover:text-white transition-colors"
+            >
+              Buy Anyway
+            </a>
+          )}
           {showRemove && onRemove && (
             <button
               onClick={() => onRemove(product.id)}
